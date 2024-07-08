@@ -3,6 +3,8 @@ services:
     build: api_poller
     depends_on:
       - rabbitmq
+    volumes:
+      - ./api_poller:/usr/src/app
 
   rabbitmq:
     image: rabbitmq
