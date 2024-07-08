@@ -1,0 +1,8 @@
+services:
+  api_poller:
+    build: api_poller
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq
