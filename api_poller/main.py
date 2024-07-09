@@ -6,24 +6,23 @@ import requests
 import pika
 
 class Config:
-    def __init__(self):
-        self.BASE_URL = "https://ws-public.interpol.int"
-        self.RED_LIST_PATH = "/notices/v1/red"
-        self.HEADERS_FILE_PATH = "headers.json"
-        self.RESULT_PER_PAGE = 160
-        self.MAX_PAGES = 1
-        self.API_RATE_LIMIT_DELAY_MS = 0
+    def __init__(self, base_url=None, red_list_path=None, result_per_page=None, max_pages=None, api_rate_limit_delay_ms=None, headers_file_path="headers.json"):
+        self.BASE_URL = base_url or "https://ws-public.interpol.int"
+        self.RED_LIST_PATH = red_list_path or "/notices/v1/red"
+        self.RESULT_PER_PAGE = result_per_page or 160
+        self.MAX_PAGES = max_pages or 1
+        self.API_RATE_LIMIT_DELAY_MS = api_rate_limit_delay_ms or 0
+        self.HEADERS_FILE_PATH = headers_file_path
 
     @classmethod
     def load_from_env(cls):
-        config = cls()
-        config.BASE_URL = os.getenv("BASE_URL")
-        config.RED_LIST_PATH = os.getenv("RED_LIST_PATH")
-        config.RESULT_PER_PAGE = int(os.getenv("RESULT_PER_PAGE"))
-        config.MAX_PAGES = int(os.getenv("MAX_PAGES"))
-        config.API_RATE_LIMIT_DELAY_MS = int(os.getenv("API_RATE_LIMIT_DELAY_MS"))
-        return config
-
+        return cls(
+            base_url=os.getenv("BASE_URL"),
+            red_list_path=os.getenv("RED_LIST_PATH"),
+            result_per_page=int(os.getenv("RESULT_PER_PAGE")),
+            max_pages=int(os.getenv("MAX_PAGES")),
+            api_rate_limit_delay_ms=int(os.getenv("API_RATE_LIMIT_DELAY_MS"))
+        )
 
 class BaseFetcher:
     def __init__(self, config):
@@ -47,11 +46,11 @@ class BaseFetcher:
     def _send_request_with_custom_headers(self, url, params={}, headers={}):
         r = requests.get(url, headers=headers, params=params)
         time.sleep(self._config.API_RATE_LIMIT_DELAY_MS // 1000)
+        return r.json()
 
     def _send_request(self, url, params={}):
-        r = requests.get(url, headers=self._headers, params=params)
-        time.sleep(self._config.API_RATE_LIMIT_DELAY_MS // 1000)
-        return r.json()
+        return self._send_request_with_custom_headers(url, params,
+                                                      self._headers)
 
 class NoticeListFetcher(BaseFetcher):
     def __init__(self, config):
