@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields, validate, ValidationError
 import json
 
 COUNTRIES = json.load(open('schemas/country_codes.json')).keys()
@@ -16,6 +16,20 @@ def list_field_consists_consts(
         constants: tuple, allow_none=False
 ) -> fields.List:
     return fields.List(field_consists_consts(constants, allow_none), allow_none=allow_none)
+
+def field_int_or_null() -> fields.Field:
+    def validate_int_or_null(value):
+        if value is not None and not isinstance(value, int):
+            raise ValidationError("Field should be null or an integer.")
+    return fields.Field(allow_none=True, validate=validate_int_or_null)
+
+def field_float_or_null() -> fields.Field:
+    def validate_float_or_null(value):
+        not_float = not isinstance(value, float)
+        not_int = not isinstance(value, int)
+        if value is not None and not_float and not_int:
+            raise ValidationError("Field should be null or an float.")
+    return fields.Field(allow_none=True, validate=validate_float_or_null)
 
 class EmbeddedSchema(Schema):
     links = fields.List(fields.String())
@@ -36,7 +50,7 @@ class ArrestWarrantSchema(Schema):
 class NoticeSchema(Schema):
     date_of_birth = fields.String(allow_none=True)
     distinguishing_marks = fields.String(allow_none=True)
-    weight = fields.String(allow_none=True)
+    weight = field_int_or_null()
     nationalities = list_field_consists_consts(COUNTRIES, True)
     entity_id = fields.String(allow_none=True, required=True)
     eyes_colors_id = list_field_consists_consts(EYES, True)
@@ -48,7 +62,7 @@ class NoticeSchema(Schema):
     hairs_id = list_field_consists_consts(HAIRS, True)
     name = fields.String(allow_none=True)
     languages_spoken_ids = list_field_consists_consts(LANGUAGES, True)
-    height = fields.String(allow_none=True)
+    height = field_float_or_null()
     _embedded = fields.Nested(EmbeddedSchema)
     _links = fields.Nested(LinksSchema)
 
