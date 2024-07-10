@@ -3,6 +3,9 @@ import json
 import time
 
 from config import Config
+from exceptions import APIRequestException
+from exceptions import NoticeDetailParsingException
+from exceptions import NoticeListParsingException
 from schemas.notice_schema import validate_notice_data
 
 class BaseFetcher:
@@ -31,8 +34,18 @@ class BaseFetcher:
         headers: dict={}
     ) -> dict:
         r = requests.get(url, headers=headers, params=params)
+        if r.status_code != 200:
+            raise APIRequestException(
+                f"Request to {url} failed with status code {r.status_code}: {r.text}"
+            )
         time.sleep(self._config.API_RATE_LIMIT_DELAY_MS / 1000)
-        return r.json()
+        try:
+            return r.json()
+        except requests.exception.JSONDecodeError:
+            raise APIRequestException(
+                f"Request to {url} did not return json response {r.text}"
+            )
+            
 
     def _send_request(self, url, params={}) -> dict:
         return self._send_request_with_custom_headers(
@@ -47,7 +60,12 @@ class NoticeListFetcher(BaseFetcher):
         self._notice_list = set()
 
     def _extract_ids_from_page(self, data: dict) -> list[str]:
-        notices = data['_embedded']['notices']
+        try:
+            notices = data['_embedded']['notices']
+        except KeyError:
+            raise NoticeListParsingException(
+                f"Unable to extract notice ids from {data}"
+            )
         ids = [
                 notice['entity_id'].replace('/', '-')
                     for notice in notices
@@ -78,5 +96,9 @@ class NoticeDetailFetcher(BaseFetcher):
         url = f"{self._red_list_url}/{notice_id}"
         data = self._send_request(url)
         errors = validate_notice_data(data)
-        if not errors: return data
-        return data
+        if not errors:
+            return data
+        else: 
+            raise NoticeDetailParsingException(
+                f"Unable to parse notice details from: {data}, Errors:{errors}"
+            )
