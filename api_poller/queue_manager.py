@@ -2,7 +2,7 @@ import pika
 import json
 
 from config import Config
-import time # TODO
+
 class QueueManager:
     def __init__(self, config: Config):
         self._config = config
