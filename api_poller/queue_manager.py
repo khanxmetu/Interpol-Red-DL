@@ -6,9 +6,8 @@ import time # TODO
 class QueueManager:
     def __init__(self, config: Config):
         self._config = config
-        print(self._config.BROKER_HOST_ADDR, self._config.BROKER_HOST_PORT)
         self._connection = self._initialize_connection(
-            self._config.BROKER_HOST_ADDR, self._config.BROKER_HOST_PORT
+            self._config.BROKER_HOST, self._config.BROKER_PORT
         )
         self._channel = self._connection.channel()
         self._queue_name = self._config.QUEUE_NAME
