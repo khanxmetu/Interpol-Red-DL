@@ -3,6 +3,7 @@ import json
 import time
 
 from config import Config
+from schemas.notice_schema import validate_notice_data
 
 class BaseFetcher:
     def __init__(self, config: Config) -> None:
@@ -76,4 +77,6 @@ class NoticeDetailFetcher(BaseFetcher):
     def fetch(self, notice_id: str) -> dict:
         url = f"{self._red_list_url}/{notice_id}"
         data = self._send_request(url)
+        errors = validate_notice_data(data)
+        if not errors: return data
         return data

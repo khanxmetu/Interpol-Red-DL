@@ -1,0 +1,47 @@
+{
+    "arrest_warrants": [
+      {
+        "issuing_country_id": "DE",
+        "charge": "Attempted murder coinciding with attempted jointly committed aggravated robbery and kidnapping for ransom coinciding with aggravated robbery and aggravated robbery coinciding with attempted aggravated extortionate assault especially aggravated robbery aggravated robbery in penal cumulation with attempted arson and aggravated robbery",
+        "charge_translation": "string"
+      }
+    ],
+    "weight": 63,
+    "forename": "DANIELA MARIE LUISE",
+    "date_of_birth": "1958/11/05",
+    "entity_id": "1993/27493",
+    "languages_spoken_ids": [
+      "GER"
+    ],
+    "nationalities": [
+      "DE"
+    ],
+    "height": 1.65,
+    "sex_id": "F",
+    "country_of_birth_id": "DE",
+    "name": "KLETTE",
+    "distinguishing_marks": "Birthmarks in the face",
+    "eyes_colors_id": [
+      "BRO"
+    ],
+    "hairs_id": [
+      "BLA"
+    ],
+    "place_of_birth": "KARLSRUHE",
+    "_embedded": {
+      "links": [
+        "string"
+      ]
+    },
+    "_links": {
+      "self": {
+        "href": "https://ws-public.interpol.int/notices/v1/red/1993-27493"
+      },
+      "images": {
+        "href": "https://ws-public.interpol.int/notices/v1/red/1993-27493/images"
+      },
+      "thumbnail": {
+        "href": "https://ws-public.interpol.int/notices/v1/red/1993-27493/images/59558401"
+      }
+    }
+  }
