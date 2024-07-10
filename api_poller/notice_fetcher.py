@@ -30,7 +30,7 @@ class BaseFetcher:
         headers: dict={}
     ) -> dict:
         r = requests.get(url, headers=headers, params=params)
-        time.sleep(self._config.API_RATE_LIMIT_DELAY_MS // 1000)
+        time.sleep(self._config.API_RATE_LIMIT_DELAY_MS / 1000)
         return r.json()
 
     def _send_request(self, url, params={}) -> dict:
