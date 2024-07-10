@@ -12,8 +12,8 @@ def main():
         print("[!] Worker process started")
         run_fetch_worker()
         print("[!] Worker process completed")
+        print("[!] waiting for the next run...")
         time.sleep(poll_interval)
-        print("[!] Polling interval elapsed, waiting for the next run...")
 
 if __name__ == "__main__":
     main()
