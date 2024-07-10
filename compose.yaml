@@ -5,7 +5,9 @@ services:
       - rabbitmq
     volumes:
       - ./api_poller:/usr/src/app
-    env_file: api_poller.env
+    env_file:
+      - api_poller.env
+      - common.env
 
   rabbitmq:
     image: rabbitmq
