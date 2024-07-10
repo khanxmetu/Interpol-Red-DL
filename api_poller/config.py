@@ -10,8 +10,8 @@ class Config:
         api_rate_limit_delay_ms=None,
         headers_file_path=None,
         queue_name=None,
-        broker_host_addr=None,
-        broker_host_port=None
+        broker_host=None,
+        broker_port=None
     ) -> None:
         self.BASE_URL: str = base_url or "https://ws-public.interpol.int"
         self.RED_LIST_PATH: str = red_list_path or "/notices/v1/red"
@@ -20,8 +20,8 @@ class Config:
         self.API_RATE_LIMIT_DELAY_MS: int = api_rate_limit_delay_ms or 0
         self.HEADERS_FILE_PATH: str = headers_file_path or "headers.json"
         self.QUEUE_NAME: str = queue_name or "fetched_notices"
-        self.BROKER_HOST_ADDR: str = broker_host_addr or "localhost"
-        self.BROKER_HOST_PORT: int = broker_host_port or 5672
+        self.BROKER_HOST: str = broker_host or "localhost"
+        self.BROKER_PORT: int = broker_port or 5672
 
     @classmethod
     def load_from_env(cls):
@@ -32,6 +32,6 @@ class Config:
             max_pages=int(os.getenv("MAX_PAGES")),
             api_rate_limit_delay_ms=int(os.getenv("API_RATE_LIMIT_DELAY_MS")),
             queue_name=os.getenv("QUEUE_NAME"),
-            broker_host_addr = os.getenv("BROKER_HOST_ADDR"),
-            broker_host_port = os.getenv("BROKER_HOST_PORT")
+            broker_host = os.getenv("BROKER_HOST"),
+            broker_port = os.getenv("BROKER_PORT")
         )
