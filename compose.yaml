@@ -12,8 +12,10 @@ services:
 
   rabbitmq:
     image: rabbitmq
+    ports:
+      - 15672:15672
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
-      interval: 30s
+      interval: 15s
       timeout: 3s
       retries: 3

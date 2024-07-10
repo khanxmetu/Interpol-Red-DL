@@ -16,12 +16,10 @@ class FetchWorker:
             data = self._detail_fetcher.fetch(notice_id)
             self._queue_manager.push(data)
 
-def main() -> None:
+def run_fetch_worker() -> None:
     config = Config.load_from_env()
     worker = FetchWorker(config)
     worker.run()
-    print("Ran successfully")
-
 
 if __name__ == "__main__":
-    main()
+    run_fetch_worker()
