@@ -33,7 +33,12 @@ class BaseFetcher:
         params: dict={},
         headers: dict={}
     ) -> dict:
-        r = requests.get(url, headers=headers, params=params)
+        try:
+            r = requests.get(url, headers=headers, params=params)
+        except requests.exceptions.RequestException as e:
+            raise APIRequestException(
+                f"Request to {url} failed: {e}"
+            )
         if r.status_code != 200:
             raise APIRequestException(
                 f"Request to {url} failed with status code {r.status_code}: {r.text}"
