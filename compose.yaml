@@ -10,10 +10,21 @@ services:
       - api_poller.env
       - common.env
 
+  notice_server:
+    build: notice_server
+    ports:
+      - "${WEB_SERVER_HOST_PORT}:5000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./notice_server:/usr/src/app
+    env_file:
+      - notice_server.env
+      - common.env
+
   rabbitmq:
     image: rabbitmq
-    ports:
-      - 15672:15672
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
       interval: 15s
