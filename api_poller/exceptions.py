@@ -15,3 +15,13 @@ class NoticeDetailParsingException(APIPollerException):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)
+
+class RabbitMQConnectionError(APIPollerException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+class RabbitMQPublishError(APIPollerException):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
