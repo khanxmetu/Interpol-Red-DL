@@ -1,3 +1,4 @@
 pika
 mongoengine
 flask
+flask-socketio
