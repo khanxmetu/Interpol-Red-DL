@@ -21,8 +21,8 @@ class NoticeUpdateNotifier:
             changed_data: dict
             ) -> None:
         self._socketio.emit(
-            event='notice_update',
-            args={
+            'notice_update',
+            {
                 'notice_id': notice_id,
                 'update_type': update_type.name.lower(),
                 'changed_data': changed_data
