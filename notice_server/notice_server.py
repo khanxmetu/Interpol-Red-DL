@@ -4,6 +4,8 @@ from flask import Flask
 import pika
 from flask_socketio import SocketIO
 
+from notice_consumer import NoticeConsumer
+
 app = Flask(__name__)
 socketio = SocketIO(app)
 
@@ -23,17 +25,7 @@ def notice_list_view():
 def notice_view(notice_id: str):
     pass
 
-class Consumer:
-    def __init__(self):
-        pass
-    def run(self):
-        while True:
-            socketio.emit('notification', {
-                "data":"asdasd"
-            })
-            time.sleep(1)
-
 if __name__ == "__main__":
-    consumer = Consumer()
-    socketio.start_background_task(target=consumer.run)
+    notice_consumer = NoticeConsumer(socketio)
+    socketio.start_background_task(target=notice_consumer.run)
     socketio.run(app, host="0.0.0.0", debug=False, allow_unsafe_werkzeug=True)
