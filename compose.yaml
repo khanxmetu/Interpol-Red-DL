@@ -17,16 +17,26 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      db:
+        condition: service_healthy
     volumes:
       - ./notice_server:/usr/src/app
     env_file:
       - notice_server.env
       - common.env
-
+  
   rabbitmq:
     image: rabbitmq
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
       interval: 15s
+      timeout: 3s
+      retries: 3
+
+  db:
+    image: mongo
+    healthcheck:
+      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
       timeout: 3s
       retries: 3
