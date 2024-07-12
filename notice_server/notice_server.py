@@ -4,7 +4,11 @@ from flask import Flask
 import pika
 from flask_socketio import SocketIO
 
+from config import Config
 from notice_consumer import NoticeConsumer
+from notice_db_manager import NoticeDBManager
+from notice_update_notifier import NoticeUpdateNotifier
+
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -17,6 +21,13 @@ NOTICES = [
     }
 ]
 
+config = Config()
+notice_db_manager = NoticeDBManager(config)
+notice_update_notifier = NoticeUpdateNotifier(config, socketio)
+notice_consumer = NoticeConsumer(
+    config, notice_db_manager, notice_update_notifier
+)
+
 @app.route('/')
 def notice_list_view():
     return NOTICES
@@ -26,6 +37,5 @@ def notice_view(notice_id: str):
     pass
 
 if __name__ == "__main__":
-    notice_consumer = NoticeConsumer(socketio)
     socketio.start_background_task(target=notice_consumer.run)
     socketio.run(app, host="0.0.0.0", debug=False, allow_unsafe_werkzeug=True)
