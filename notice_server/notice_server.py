@@ -28,7 +28,9 @@ class Consumer:
         pass
     def run(self):
         while True:
-            socketio.emit("dummy data")
+            socketio.emit('notification', {
+                "data":"asdasd"
+            })
             time.sleep(1)
 
 if __name__ == "__main__":
