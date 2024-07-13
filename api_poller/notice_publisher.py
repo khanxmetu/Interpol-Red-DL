@@ -26,7 +26,7 @@ class NoticePublisher:
             params = pika.ConnectionParameters(host=host, port=port)
             return pika.BlockingConnection(parameters=params)
         except pika.exceptions.AMQPConnectionError as e:
-            raise RabbitMQConnectionError(f"Failed to connect to RabbitMQ: {e}")
+            raise RabbitMQConnectionError(f"Failed to connect to RabbitMQ at {host}:{port}")
 
     def publish_notice(self, data: dict) -> None:
         try:

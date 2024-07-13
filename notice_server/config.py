@@ -16,3 +16,14 @@ class Config:
         self.QUEUE_NAME: str = queue_name or "fetched_notices"
         self.BROKER_HOST: str = broker_host or "localhost"
         self.BROKER_PORT: int = broker_port or 5672
+    
+    @classmethod
+    def load_from_env(cls):
+        return cls(
+            db_host = os.getenv("DB_HOST"),
+            db_port = os.getenv("DB_PORT"),
+            db_name = os.getenv("DB_NAME"),
+            queue_name=os.getenv("QUEUE_NAME"),
+            broker_host = os.getenv("BROKER_HOST"),
+            broker_port = os.getenv("BROKER_PORT")
+        )

@@ -21,7 +21,7 @@ NOTICES = [
     }
 ]
 
-config = Config()
+config = Config.load_from_env()
 notice_db_manager = NoticeDBManager(config)
 notice_update_notifier = NoticeUpdateNotifier(config, socketio)
 notice_consumer = NoticeConsumer(

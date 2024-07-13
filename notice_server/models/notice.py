@@ -6,11 +6,11 @@ from mongoengine import StringField, IntField, FloatField
 from mongoengine import EmbeddedDocumentListField, DateTimeField
 
 
-COUNTRIES = json.load(open('schemas/country_codes.json')).keys()
-LANGUAGES = json.load(open('schemas/language_codes.json')).keys()
-EYES = json.load(open('schemas/eye_color_codes.json')).keys()
-HAIRS = json.load(open('schemas/hair_color_codes.json')).keys()
-SEXES = json.load(open('schemas/sex_codes.json')).keys()
+COUNTRIES = json.load(open('models/country_codes.json')).keys()
+LANGUAGES = json.load(open('models/language_codes.json')).keys()
+EYES = json.load(open('models/eye_color_codes.json')).keys()
+HAIRS = json.load(open('models/hair_color_codes.json')).keys()
+SEXES = json.load(open('models/sex_codes.json')).keys()
 
 
 
