@@ -92,18 +92,40 @@ class NoticeListFetcher(BaseFetcher):
             self._notice_list.update(fetched_ids)
         return list(self._notice_list)
 
+class NoticeImgIdsFetcher(BaseFetcher):
+    def __init__(self, config):
+        super().__init__(config)
+    
+    def fetch(self, imgs_url) -> list[str]:
+        if not imgs_url:
+            return []
+        data = self._send_request(imgs_url)
+        try:
+            images_details: list[dict] = data["_embedded"]["images"]
+        except KeyError:
+            raise NoticeDetailParsingException(
+                f"Unable to extract image ids from {data}"
+            )
+        img_ids = [item["picture_id"] for item in images_details if item.get("picture_id")]
+        return img_ids
+
 
 class NoticeDetailFetcher(BaseFetcher):
     def __init__(self, config):
         super().__init__(config)
+        self._img_ids_fetcher = NoticeImgIdsFetcher(config)
 
     def fetch(self, notice_id: str) -> dict:
         url = f"{self._red_list_url}/{notice_id}"
         data = self._send_request(url)
         errors = validate_notice_data(data)
-        if not errors:
-            return data
-        else: 
+        if errors: 
             raise NoticeDetailParsingException(
                 f"Unable to parse notice details from: {data}, Errors:{errors}"
             )
+        data['notice_id'] = data['entity_id']
+        data['img_ids'] = self._img_ids_fetcher.fetch(data['_links']['images']['href'])
+        del data['entity_id']
+        del data['_links']
+        del data['_embedded']
+        return data
