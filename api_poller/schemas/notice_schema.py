@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate, ValidationError
+from marshmallow import Schema, fields, validate, ValidationError, pre_load
 import json
 
 COUNTRIES = json.load(open('schemas/country_codes.json')).keys()
@@ -35,7 +35,7 @@ class EmbeddedSchema(Schema):
     links = fields.List(fields.String())
 
 class LinkSchema(Schema):
-    href = fields.String()
+    href = fields.URL()
 
 class LinksSchema(Schema):
     self = fields.Nested(LinkSchema)
@@ -52,7 +52,7 @@ class NoticeSchema(Schema):
     distinguishing_marks = fields.String(allow_none=True)
     weight = field_int_or_null()
     nationalities = list_field_consists_consts(COUNTRIES, True)
-    entity_id = fields.String(allow_none=True, required=True)
+    entity_id = fields.String(required=True)
     eyes_colors_id = list_field_consists_consts(EYES, True)
     sex_id = field_consists_consts(SEXES, True)
     place_of_birth = fields.String(allow_none=True)
@@ -66,7 +66,16 @@ class NoticeSchema(Schema):
     _embedded = fields.Nested(EmbeddedSchema)
     _links = fields.Nested(LinksSchema)
 
-notice_schema = NoticeSchema()
+class NewNoticeSchema(NoticeSchema):
+    notice_id = fields.String(required=True)
+    img_ids = fields.List(fields.String())
 
-def validate_notice_data(data: dict, notice_schema: Schema = notice_schema):
+    class Meta:
+        exclude = ('_embedded', '_links', 'entity_id')
+
+
+notice_schema = NoticeSchema()
+new_notice_schema = NewNoticeSchema()
+
+def validate_notice_data(data: dict, notice_schema: Schema = notice_schema) -> dict:
     return notice_schema.validate(data)
