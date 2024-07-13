@@ -49,26 +49,5 @@ class NoticeDBManager:
             new_notice.save()
             return NoticeUpdateType.CREATED
     
-    def update_notice_from_dict(self, notice_data: dict) -> NoticeUpdateType:
-        # Notice exists with exact details
-        success = Notice.objects(
-            **notice_data
-        ).update_one(last_fetched_date=datetime.now)
-        if success: return NoticeUpdateType.REFETCHED
-
-        # Notice modified
-        success = Notice.objects(
-            notice_id = notice_data['notice_id']
-        ).update_one(
-            **notice_data,
-            last_fetched_date=datetime.now,
-            last_modified_date=datetime.now
-        )
-        if success: return NoticeUpdateType.MODIFIED
-
-        # New notice
-        Notice(**notice_data).save()
-        return NoticeUpdateType.CREATED
-
     def close(self):
         mongoengine.disconnect()
