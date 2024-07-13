@@ -21,9 +21,9 @@ class Config:
     def load_from_env(cls):
         return cls(
             db_host = os.getenv("DB_HOST"),
-            db_port = os.getenv("DB_PORT"),
+            db_port = int(os.getenv("DB_PORT")),
             db_name = os.getenv("DB_NAME"),
             queue_name=os.getenv("QUEUE_NAME"),
             broker_host = os.getenv("BROKER_HOST"),
-            broker_port = os.getenv("BROKER_PORT")
+            broker_port = int(os.getenv("BROKER_PORT"))
         )
