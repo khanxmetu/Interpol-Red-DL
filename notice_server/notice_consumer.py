@@ -1,8 +1,8 @@
 import time
 
 from config import Config
-from notice_db_manager import NoticeDBManager
-from notice_update_notifier import NoticeUpdateNotifier, NoticeUpdateType
+from notice_db_manager import NoticeDBManager, NoticeUpdateType
+from notice_update_notifier import NoticeUpdateNotifier
 
 class NoticeConsumer:
     def __init__(

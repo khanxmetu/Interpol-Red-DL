@@ -1,13 +1,7 @@
-from enum import Enum, auto
-
 from flask_socketio import SocketIO
 
+from notice_db_manager import NoticeUpdateType
 from config import Config
-
-class NoticeUpdateType(Enum):
-    CREATED = auto()
-    REFETCHED = auto()
-    MODIFIED = auto()
 
 class NoticeUpdateNotifier:
     def __init__(self, config: Config, socketio: SocketIO) -> None:

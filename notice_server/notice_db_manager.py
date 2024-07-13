@@ -1,20 +1,74 @@
+from datetime import datetime
+from enum import Enum, auto
+
+import mongoengine
+from mongoengine import DoesNotExist
+
+from models.notice import Notice
+
 from config import Config
 
-from mongoengine import connect, Document, StringField
-
-
-class Notice(Document):
-    notice_id = StringField(primary_key=True, max_length=20)
-    name = StringField(max_length=20)
-
+class NoticeUpdateType(Enum):
+    CREATED = auto()
+    REFETCHED = auto()
+    MODIFIED = auto()
 
 class NoticeDBManager:
-    def __init__(self, config: Config):
+    def __init__(self, config: Config) -> None:
         self._config = config
-        connect(db=self._config.DB_NAME, host=self._config.DB_HOST, port=self._config.DB_PORT)
+        mongoengine.connect(
+            db=self._config.DB_NAME,
+            host=self._config.DB_HOST,
+            port=self._config.DB_PORT
+            )
+    
+    def get_notice_by_id(self, notice_id: str, default=None) -> Notice:
+        try:
+            return Notice.objects.get(notice_id=notice_id)
+        except DoesNotExist as e:
+            return default
+    
+    def update_notice_from_doc(self, new_notice: Notice) -> NoticeUpdateType:
+        old_notice = self.get_notice_by_id(new_notice.notice_id)
 
-if __name__ == "__main__":
-    config = Config(db_host='db')
-    NoticeDBManager(config)
-    notice = Notice(notice_id='2024-20', name='ABC')
-    notice.save()
+        # Notice exists with exact details
+        if old_notice and old_notice == new_notice:
+            old_notice.last_fetched_date = new_notice.last_fetched_date
+            old_notice.save()
+            new_notice.reload()
+            return NoticeUpdateType.REFETCHED
+
+        # Notice modified
+        elif old_notice:
+            new_notice.first_fetched_date = old_notice.first_fetched_date
+            new_notice.save()
+            return NoticeUpdateType.MODIFIED
+
+        # New notice
+        else:
+            new_notice.save()
+            return NoticeUpdateType.CREATED
+    
+    def update_notice_from_dict(self, notice_data: dict) -> NoticeUpdateType:
+        # Notice exists with exact details
+        success = Notice.objects(
+            **notice_data
+        ).update_one(last_fetched_date=datetime.now)
+        if success: return NoticeUpdateType.REFETCHED
+
+        # Notice modified
+        success = Notice.objects(
+            notice_id = notice_data['notice_id']
+        ).update_one(
+            **notice_data,
+            last_fetched_date=datetime.now,
+            last_modified_date=datetime.now
+        )
+        if success: return NoticeUpdateType.MODIFIED
+
+        # New notice
+        Notice(**notice_data).save()
+        return NoticeUpdateType.CREATED
+
+    def close(self):
+        mongoengine.disconnect()
