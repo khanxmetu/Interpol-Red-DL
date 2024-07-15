@@ -1,6 +1,6 @@
 import time
 
-from flask import Flask
+from flask import Flask, render_template
 import pika
 from flask_socketio import SocketIO
 
@@ -13,11 +13,14 @@ from notice_update_notifier import NoticeUpdateNotifier
 app = Flask(__name__)
 socketio = SocketIO(app)
 
+
+from datetime import datetime
 NOTICES = [
     {
-        "notice_1": {
-            "adas": "asdasd"
-        }
+        "notice_id": "asdsd",
+        "forename": "asd",
+        "name": "Bob",
+        "last_fetched": datetime.now()
     }
 ]
 
@@ -30,7 +33,7 @@ notice_consumer = NoticeConsumer(
 
 @app.route('/')
 def notice_list_view():
-    return NOTICES
+    return render_template("notice_list.html", notices=NOTICES)
 
 @app.route('/notice/<notice_id>')
 def notice_view(notice_id: str):

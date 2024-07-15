@@ -11,19 +11,19 @@ class Config:
         broker_port=None
     ):
         self.DB_HOST: str = db_host or "localhost"
-        self.DB_PORT: int = db_port or 27017
+        self.DB_PORT: int = int(db_port or 27017)
         self.DB_NAME: str = db_name or "notice-db"
         self.QUEUE_NAME: str = queue_name or "fetched_notices"
         self.BROKER_HOST: str = broker_host or "localhost"
-        self.BROKER_PORT: int = broker_port or 5672
+        self.BROKER_PORT: int = int(broker_port or 5672)
     
     @classmethod
     def load_from_env(cls):
         return cls(
             db_host = os.getenv("DB_HOST"),
-            db_port = int(os.getenv("DB_PORT")),
+            db_port = os.getenv("DB_PORT"),
             db_name = os.getenv("DB_NAME"),
             queue_name=os.getenv("QUEUE_NAME"),
             broker_host = os.getenv("BROKER_HOST"),
-            broker_port = int(os.getenv("BROKER_PORT"))
+            broker_port = os.getenv("BROKER_PORT")
         )

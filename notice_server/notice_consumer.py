@@ -50,7 +50,7 @@ class NoticeConsumer:
         notice = Notice(**notice_dict)
         update_type = self._db_manager.update_notice_from_doc(notice)
         if update_type in [NoticeUpdateType.CREATED, NoticeUpdateType.MODIFIED]:
-            changed_data = notice_dict.copy()
+            changed_data = notice_dict
         else:
             changed_data = {}
         self._update_notifier.notify(notice.notice_id, update_type, changed_data)
