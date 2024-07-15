@@ -4,7 +4,7 @@ from api_poller.models.coded_enum import CodedEnum
 def _encode_enums_to_code(obj: CodedEnum|list[CodedEnum]) -> str|list[str]:
     """Returns corresponding code(s) for the CodedEnum object(s)"""
     if isinstance(obj, CodedEnum):
-        return obj.name
+        return obj.code
     elif type(obj) == list:
         return [x.code if isinstance(x, CodedEnum) else x for x in obj]
 
