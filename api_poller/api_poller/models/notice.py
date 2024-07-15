@@ -3,32 +3,13 @@ from pydantic import ValidationInfo, AnyHttpUrl
 from typing import Optional
 from datetime import date
 
+from api_poller.models.utils import _encode_enums_to_code, _decode_enums_from_code
 from api_poller.models.coded_enum import CodedEnum
 from api_poller.models.eye_color import EyeColor
 from api_poller.models.hair_color import HairColor
 from api_poller.models.language import Language
 from api_poller.models.country import Country
 from api_poller.models.sex import Sex
-
-def _encode_enums_to_code(obj: CodedEnum|list[CodedEnum]) -> str:
-    if isinstance(obj, CodedEnum):
-        return obj.name
-    elif type(obj) == list:
-        return [x.code if isinstance(x, CodedEnum) else x for x in obj]
-
-def _decode_enums_from_code(
-        obj: list[str]|str|list[CodedEnum]|CodedEnum,
-        related_enum: CodedEnum
-    ) -> CodedEnum:
-    if isinstance(obj, list):
-        return [
-            related_enum.get_from_code(item) 
-                if isinstance(item, str) else item for item in obj
-        ]
-    elif isinstance(obj, str):
-        return related_enum.get_from_code(obj)
-    else:
-        return obj
 
         
 class ArrestWarrant(BaseModel):
@@ -39,7 +20,7 @@ class ArrestWarrant(BaseModel):
     @field_serializer(
         "issuing_country_id",
     )
-    def encode_enums_to_code(obj: CodedEnum|list[CodedEnum]):
+    def encode_enums_to_code(obj: CodedEnum|list[CodedEnum]) -> str|list[str]:
         return _encode_enums_to_code(obj)
 
     @field_validator(
@@ -47,7 +28,7 @@ class ArrestWarrant(BaseModel):
         mode='before'
     )
     @classmethod
-    def decode_enums_from_code(cls, obj, ctx:ValidationInfo) -> CodedEnum:
+    def decode_enums_from_code(cls, obj, ctx:ValidationInfo) -> CodedEnum|list[CodedEnum]:
         field_enum_mapping: dict[str, CodedEnum] = {
             "issuing_country_id": Country
         }
@@ -81,7 +62,7 @@ class Notice(BaseModel):
         "hairs_id",
         "languages_spoken_ids",
     )
-    def encode_enums_to_code(obj: CodedEnum|list[CodedEnum]) -> str:
+    def encode_enums_to_code(obj: CodedEnum|list[CodedEnum]) -> str|list[str]:
         return _encode_enums_to_code(obj)
 
     @field_validator(
@@ -94,7 +75,7 @@ class Notice(BaseModel):
         mode='before'
     )
     @classmethod
-    def decode_enums_from_code(cls, obj, ctx:ValidationInfo) -> CodedEnum:
+    def decode_enums_from_code(cls, obj, ctx:ValidationInfo) -> CodedEnum|list[CodedEnum]:
         field_enum_mapping: dict[str, CodedEnum] = {
             "nationalities": Country,
             "eyes_colors_id": EyeColor,
