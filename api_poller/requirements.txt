@@ -3,3 +3,4 @@ pika
 marshmallow
 pytest
 pytest-cov
+pydantic
