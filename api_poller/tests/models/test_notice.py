@@ -122,3 +122,7 @@ def test_notice_to_json_with_list_of_coded_enums():
     )
     expected_json = '{"notice_id":"2323","url":"https://example.com/","name":null,"forename":null,"date_of_birth":null,"distinguishing_marks":null,"weight":null,"nationalities":null,"eyes_colors_id":null,"sex_id":null,"place_of_birth":null,"arrest_warrants":null,"country_of_birth_id":null,"hairs_id":null,"languages_spoken_ids":["AFA","ALB"],"height":null,"image_ids":null}'
     assert notice.model_dump_json() == expected_json
+
+def test_notice_to_json_with_code_enum():
+    notice = Notice(notice_id="2323", url="https://example.com", country_of_birth_id=Country._914)
+    assert notice.model_dump_json(exclude_none=True) == '{"notice_id":"2323","url":"https://example.com/","country_of_birth_id":"914"}'
