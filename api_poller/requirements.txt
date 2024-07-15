@@ -1,3 +1,5 @@
 requests
 pika
 marshmallow
+pytest
+pytest-cov
