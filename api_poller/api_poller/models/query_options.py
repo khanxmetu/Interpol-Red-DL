@@ -12,6 +12,7 @@ class QueryOptions(BaseModel):
     ageMin: Optional[int] = None
     ageMax: Optional[int] = None
     arrestWarrantCountryId: Optional[Country] = None
+    resultPerPage: Optional[int] = 160
 
     @field_serializer(
         "arrestWarrantCountryId",

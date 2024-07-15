@@ -20,12 +20,13 @@ def test_query_options_field_default():
     assert options.nationality == None
     assert options.ageMin == None
     assert options.ageMax == None
+    assert options.resultPerPage == 160
 
 def test_query_options_get_options_dict_default():
     options = QueryOptions()
-    assert options.get_options_dict() == {}
+    assert options.get_options_dict() == {"resultPerPage":160}
 
 def test_query_options_get_options_dict():
     options = QueryOptions(nationality=Country._914)
-    assert options.get_options_dict() == {"nationality": "914"}
+    assert options.get_options_dict() == {"nationality": "914", "resultPerPage":160}
 
