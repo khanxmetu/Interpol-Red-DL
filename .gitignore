@@ -1,7 +1,2 @@
-api_poller/api_poller/__pycache__/
-api_poller/.pytest_cache/
-api_poller/tests/__pycache__/
-api_poller/schemas/__pycache__/
-api_poller/.coverage
-notice_server/__pycache__/
-notice_server/models/__pycache__/
+__pycache__/
+.coverage
