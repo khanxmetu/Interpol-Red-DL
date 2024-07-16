@@ -1,44 +1,20 @@
-import pika
-import json
-
-from config import Config
-from exceptions import RabbitMQConnectionError, RabbitMQPublishError
-from exceptions import NoticeDetailParsingException
+from pika.exceptions import AMQPError
+from api_poller.models.notice import Notice
+from api_poller.rabbitmq_client import RabbitMQSender
+from api_poller.exceptions import RabbitMQException
 
 class NoticePublisher:
-    def __init__(self, config: Config):
-        self._config = config
-        self._connection = self._initialize_connection(
-            self._config.BROKER_HOST, self._config.BROKER_PORT
-        )
-        self._channel = self._connection.channel()
-        self._queue_name = self._config.QUEUE_NAME
-        self._init_queue(self._queue_name)
+    def __init__(self, rmq_sender: RabbitMQSender, queue_name: str):
+        self._rmq_sender = rmq_sender
+        self._queue_name = queue_name
     
-    def _init_queue(self, name: str) -> None:
-        self._channel.queue_declare(name)
-
-    def _initialize_connection(
-        self,
-        host: str, port: int
-    ) -> pika.BlockingConnection:
+    def publish_notice(self, notice: Notice):
+        notice_json: str = notice.model_dump_json()
         try:
-            params = pika.ConnectionParameters(host=host, port=port)
-            return pika.BlockingConnection(parameters=params)
-        except pika.exceptions.AMQPConnectionError as e:
-            raise RabbitMQConnectionError(f"Failed to connect to RabbitMQ at {host}:{port}")
-
-    def publish_notice(self, data: dict) -> None:
-        try:
-            data_str = json.dumps(data)
-        except TypeError as e:
-            NoticeDetailParsingException(f"Failed to serialize notice: {data}")
-        try:
-            self._channel.basic_publish(
-                exchange='', routing_key=self._queue_name, body=data_str
+            self._rmq_sender.send_message(
+                exchange_name="",
+                routing_key=self._queue_name,
+                body=notice_json
             )
-        except pika.exceptions.AMQPError as e:
-            raise RabbitMQPublishError(f"Failed to publish message: {e}")
-
-    def __del__(self):
-        self._connection.close()
+        except AMQPError as e:
+            raise RabbitMQException(e)
