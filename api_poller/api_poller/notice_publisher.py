@@ -7,6 +7,7 @@ class NoticePublisher:
     def __init__(self, rmq_sender: RabbitMQSender, queue_name: str):
         self._rmq_sender = rmq_sender
         self._queue_name = queue_name
+        self._rmq_sender.declare_queue(queue_name)
     
     def publish_notice(self, notice: Notice):
         notice_json: str = notice.model_dump_json()
