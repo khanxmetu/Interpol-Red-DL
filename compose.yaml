@@ -26,7 +26,11 @@ services:
       - common.env
   
   rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+    env_file:
+      - common.env
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
       interval: 15s
