@@ -42,7 +42,7 @@ class NoticeDetailFetcher:
             url=data['_links']['self']['href'],
             name=data['name'],
             forename=data['forename'],
-            date_of_birth=data['date_of_birth'],
+            date_of_birth=data['date_of_birth'].replace('/', '-'),
             distinguishing_marks=data['distinguishing_marks'],
             weight=data['weight'],
             nationalities=data['nationalities'],
