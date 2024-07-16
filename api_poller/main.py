@@ -21,14 +21,14 @@ class APIPoller:
         notice_detail_fetcher: NoticeDetailFetcher,
         notice_publisher: NoticePublisher,
         api_rate_limit_delay: int,
-        poller_interval: int
+        poll_interval: int
     ):
         self._query_options_list = query_options_list
         self._notice_list_fetcher = notice_list_fetcher
         self._notice_publisher = notice_publisher
         self._notice_detail_fetcher = notice_detail_fetcher
         self._api_rate_limit_delay = api_rate_limit_delay
-        self._poller_interval = poller_interval
+        self._poll_interval = poll_interval
 
     def _read_and_publish_notice(self, notice_id: str) -> bool:
         """Returns whether notice published successfully"""
