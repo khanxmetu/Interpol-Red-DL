@@ -60,8 +60,10 @@ class APIPoller:
                     f" with query options: {query_options}. Reason: {e}"
                 )
                 continue
-            print(f"[+] {len(notice_ids)
-                         } notices found with query: {query_options}")
+            print(
+                f"[+] {len(notice_ids)} notices"
+                " found with query: {query_options}"
+            )
             for notice_id in notice_ids:
                 count += self._read_and_publish_notice(notice_id)
                 print(
@@ -108,8 +110,8 @@ def main():
     )
 
     rmq_client = RabbitMQSender(
-        host= rabbitmq_host,
-        port = rabbitmq_port,
+        host=rabbitmq_host,
+        port=rabbitmq_port,
         username=rabbitmq_user,
         password=rabbitmq_pass
     )
@@ -122,6 +124,7 @@ def main():
         api_rate_limit_delay,
         poll_interval
     ).run()
+
 
 if __name__ == "__main__":
     main()
