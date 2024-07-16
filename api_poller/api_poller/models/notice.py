@@ -51,7 +51,7 @@ class Notice(BaseModel):
     country_of_birth_id: Optional[Country] = None
     hairs_id: Optional[list[HairColor]] = None
     languages_spoken_ids: Optional[list[Language]] = None
-    height: Optional[list[int]] = None
+    height: Optional[float] = None
     image_ids: Optional[list[str]] = None
 
     @field_serializer(
