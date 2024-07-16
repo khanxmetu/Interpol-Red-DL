@@ -2,8 +2,10 @@ import pika
 import pika.channel
 import pika.connection
 
+
 class RabbitMQClient:
     """Base RabbitMQClient class that encapsulates connection logic"""
+
     def __init__(
         self,
         username: str = "guest",
@@ -19,7 +21,9 @@ class RabbitMQClient:
         self._channel: pika.channel.Channel | None = None
 
     def connect(self) -> None:
-        params = pika.ConnectionParameters(host=self._host, port=self._port)
+        credentials = pika.PlainCredentials(self._username, self._password)
+        params = pika.ConnectionParameters(
+            host=self._host, port=self._port, credentials=credentials)
         self._connection = pika.BlockingConnection(parameters=params)
         self._channel = self._connection.channel()
 
@@ -52,4 +56,3 @@ class RabbitMQSender(RabbitMQClient):
             routing_key=routing_key,
             body=body,
         )
-
