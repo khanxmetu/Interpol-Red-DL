@@ -47,4 +47,3 @@ class NoticeConsumer:
         self._rmq_consumer.consume_messages(
             queue=self._queue_name, callback=self._consume_callback
         )
-        self._rmq_consumer.c
