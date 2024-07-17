@@ -8,11 +8,6 @@ from models.notice import Notice
 
 from config import Config
 
-class NoticeUpdateType(Enum):
-    CREATED = auto()
-    REFETCHED = auto()
-    MODIFIED = auto()
-
 class NoticeDBManager:
     def __init__(self, config: Config) -> None:
         self._config = config
