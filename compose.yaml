@@ -39,6 +39,8 @@ services:
 
   db:
     image: mongo
+    env_file:
+      - common.env
     healthcheck:
       test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
