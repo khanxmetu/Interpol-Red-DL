@@ -13,7 +13,6 @@ HAIRS = json.load(open('notice_server/models/hair_color_codes.json')).keys()
 SEXES = json.load(open('notice_server/models/sex_codes.json')).keys()
 
 
-
 class ArrestWarrant(EmbeddedDocument):
     charge = StringField(max_length=2000)
     issuing_country_id = StringField(choices=COUNTRIES)
@@ -48,6 +47,14 @@ class Notice(Document):
             self.date_of_birth = date.fromisoformat(self.date_of_birth)
         super().clean()
 
+    def to_dict(self, use_db_field=False) -> dict:
+        """Convert the Notice object to dict"""
+        return self.to_mongo(use_db_field=use_db_field).to_dict()
+
+    @classmethod
+    def from_json(cls, json_str: str) -> "Notice":
+        """Make Notice object from json data"""
+        return cls(**json.loads(json_str))
 
     def __eq__(self, other):
         """
@@ -55,8 +62,10 @@ class Notice(Document):
         excluding metadata. Following fields are excluded:
         last_fetched_date, last_modified_date, first_fetched_date
         """
-        if self is other: return True
-        elif type(self) != type(other): return False
+        if self is other:
+            return True
+        elif type(self) != type(other):
+            return False
         field_names = self._fields
         for field in field_names:
             if field in ['last_fetched_date', 'last_modified_date', 'first_fetched_date']:
