@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Notice Details{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="module" src="/static/javascript/notice_detail.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>Notice ID: <span id="notice_det_id">{{notice_id}}</span></h3>
+    <div class="card mt-3">
+        <div class="card-header text-center">Photos Related to Notice</div>
+        <div class="row justify-content-center" id="notice_det_imgs">
+
+            <div class="col-md-4 mb-4 mx-auto">
+                <div class="card">
+                    <img src="https://s3.amazonaws.com/freecodecamp/relaxing-cat.jpg" class="card-img-top"
+                        alt="Image 2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Personal Details</div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Name:</strong> <span id="notice_det_name">N/A</span></li>
+            <li class="list-group-item"><strong>Date of Birth:</strong> <span id="notice_det_dob">N/A</span></li>
+            <li class="list-group-item"><strong>Distinguishing Marks:</strong> <span
+                    id="notice_det_dist_marks">N/A</span></li>
+            <li class="list-group-item"><strong>Nationalities:</strong> <span id="notice_det_nations">N/A</span>
+            </li>
+            <li class="list-group-item"><strong>Languages Spoken:</strong> <span id="notice_det_langs">N/A</span>
+            </li>
+            <li class="list-group-item"><strong>Eyes Colors:</strong> <span id="notice_det_eyes">N/A</span></li>
+            <li class="list-group-item"><strong>Hairs Colors:</strong> <span id="notice_det_hairs">N/A</span></li>
+            <li class="list-group-item"><strong>Sex:</strong> <span id="notice_det_sex">N/A</span></li>
+            <li class="list-group-item"><strong>Place of Birth:</strong> <span
+                    id="notice_det_place_birth">N/A</span></li>
+            <li class="list-group-item"><strong>Country of Birth:</strong> <span
+                    id="notice_det_country_birth">N/A</span></li>
+
+            <li class="list-group-item"><strong>Height:</strong> <span id="notice_det_height">N/A</span></li>
+            <li class="list-group-item"><strong>Weight:</strong> <span id="notice_det_weight">N/A</span></li>
+        </ul>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">Arrest Warrants</div>
+        <div id="notice_det_warrants">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Charge:</strong> N/A</li>
+                <li class="list-group-item"><strong>Charge Translation:</strong> N/A</li>
+                <li class="list-group-item"><strong>Issuing Country:</strong> N/A</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">Additional Information</div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Last Fetched Date:</strong> <span
+                    id="notice_det_last_fetch">N/A</span></li>
+            <li class="list-group-item"><strong>Last Modified Date:</strong> <span
+                    id="notice_det_last_mod">N/A</span></li>
+            <li class="list-group-item"><strong>First Fetched Date:</strong> <span
+                    id="notice_det_first_fetch">N/A</span></li>
+            <li class="list-group-item"><strong>Fetched From:</strong> <a href="" id="notice_det_url"></a></li>
+        </ul>
+    </div>
+
+</div>
+{% endblock %}
