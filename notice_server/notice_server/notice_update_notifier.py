@@ -1,11 +1,9 @@
 from flask_socketio import SocketIO
 
 from notice_db_manager import NoticeUpdateType
-from config import Config
 
 class NoticeUpdateNotifier:
-    def __init__(self, config: Config, socketio: SocketIO) -> None:
-        self._config = config
+    def __init__(self, socketio: SocketIO) -> None:
         self._socketio = socketio
 
     def notify(
