@@ -1,5 +1,7 @@
 import pytest
 from pydantic import ValidationError
+from datetime import date
+import json
 
 from api_poller.models.notice import Notice, ArrestWarrant
 from api_poller.models.country import Country
@@ -89,6 +91,12 @@ def test_notice_hairs_id_enum_value_param():
     with pytest.raises(ValidationError):
         notice = Notice(notice_id="3949", url="https://example.com", hairs_id=["Black", "Brown"])
 
+def test_notice_date_of_birth_param():
+    notice = Notice(notice_id="asd", url="https://example.com", date_of_birth="2020-04-20")
+    assert notice.date_of_birth == date(2020, 4, 20)
+    notice = Notice(notice_id="asd", url="https://example.com", date_of_birth=date(2020, 4, 20))
+    assert notice.date_of_birth == date(2020, 4, 20)
+
 def test_notice_with_arrest_warrants_param():
     warrants = [ArrestWarrant(charge="Test"), ArrestWarrant(charge="Test2")]
     notice = Notice(
@@ -126,3 +134,8 @@ def test_notice_to_json_with_list_of_coded_enums():
 def test_notice_to_json_with_code_enum():
     notice = Notice(notice_id="2323", url="https://example.com", country_of_birth_id=Country._914)
     assert notice.model_dump_json(exclude_none=True) == '{"notice_id":"2323","url":"https://example.com/","country_of_birth_id":"914"}'
+
+def test_notice_with_date():
+    notice = Notice(notice_id="2323", url="https://example.com", date_of_birth=date(2020, 4, 20))
+    json_data = notice.model_dump_json(exclude_none=True)
+    assert json.loads(json_data)["date_of_birth"] == "2020-04-20"
