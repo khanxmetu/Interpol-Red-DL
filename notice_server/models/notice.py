@@ -43,6 +43,11 @@ class Notice(Document):
     url = URLField()
 
     def __eq__(self, other):
+        """
+        Equality of two notice objects is determined based on fields
+        excluding metadata. Following fields are excluded:
+        last_fetched_date, last_modified_date, first_fetched_date
+        """
         if self is other: return True
         elif type(self) != type(other): return False
         field_names = self._fields
