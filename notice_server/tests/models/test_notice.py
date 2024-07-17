@@ -83,9 +83,9 @@ def test_notice_date_of_birth():
     assert notice.date_of_birth == date(2020, 4, 20)
 
 def test_notice_first_fetched_date():
-    notice = Notice(notice_id="304", date_of_birth=datetime(2000, 4, 20, 12, 54, 19))
+    notice = Notice(notice_id="304", first_fetched_date=datetime(2000, 4, 20, 12, 54, 19))
     notice.validate()
-    assert notice.date_of_birth == datetime(2000, 4, 20, 12, 54, 19)
+    assert notice.first_fetched_date == datetime(2000, 4, 20, 12, 54, 19)
 
 def test_full_notice():
     data = {
