@@ -1,28 +1,26 @@
-from datetime import datetime
-from enum import Enum, auto
-
 import mongoengine
 from mongoengine import DoesNotExist
 
-from models.notice import Notice
+from notice_server.models.notice import Notice
+from notice_update_notifier import NoticeUpdateType
 
-from config import Config
 
 class NoticeDBManager:
-    def __init__(self, config: Config) -> None:
-        self._config = config
+    def __init__(self, db_name, db_user, db_pass, db_host, db_port) -> None:
         mongoengine.connect(
-            db=self._config.DB_NAME,
-            host=self._config.DB_HOST,
-            port=self._config.DB_PORT
-            )
-    
+            db=db_name,
+            username=db_user,
+            password=db_pass,
+            host=db_host,
+            port=db_port
+        )
+
     def get_notice_by_id(self, notice_id: str, default=None) -> Notice:
         try:
             return Notice.objects.get(notice_id=notice_id)
         except DoesNotExist as e:
             return default
-    
+
     def update_notice_from_doc(self, new_notice: Notice) -> NoticeUpdateType:
         old_notice = self.get_notice_by_id(new_notice.notice_id)
 
@@ -43,6 +41,6 @@ class NoticeDBManager:
         else:
             new_notice.save()
             return NoticeUpdateType.CREATED
-    
+
     def close(self):
         mongoengine.disconnect()
