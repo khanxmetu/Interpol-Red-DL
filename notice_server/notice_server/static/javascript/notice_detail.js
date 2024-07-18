@@ -114,7 +114,7 @@ async function fetch_and_populate_details(url) {
 
 const main = () => {
     fetch_and_populate_details(`/api/notice/${NOTICE_ID}`)
-    const socket = io.connect()
+    const socket = io.connect("/")
     socket.on("notice_update", (data) => {
         const update_type = data.update_type;
         const changed_data = data.changed_data;

@@ -66,7 +66,7 @@ async function fetch_and_populate_table(url) {
     }
 }
 
-const socket = io.connect()
+const socket = io.connect("/")
 socket.on("notice_update", (data) => {
   const notice_id = data.notice_id
   const update_type = data.update_type;
