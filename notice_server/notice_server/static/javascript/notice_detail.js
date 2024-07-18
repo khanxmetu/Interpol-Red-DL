@@ -1,11 +1,6 @@
 import { format_dates_in_notice } from "./utils.js"
 import { show_alert } from "./show_alert.js"
-
-const COUNTRIES = { "UY": "UGANDA", "DE": "Germany" }
-const LANGUAGES = { "SPA": "SPANISH" }
-const SEXES = { "M": "Male", "F": "Female", "U": "Unknown" }
-const EYES = { "BRO": "BROWN" }
-const HAIRS = { "BRO": "BROWN" }
+import {COUNTRIES, LANGUAGES, EYES, HAIRS, SEXES} from "./abbreviations_data.js"
 
 const NOTICE_ID = document.getElementById("notice_det_id").innerText
 
