@@ -44,8 +44,8 @@ const update_existing_notice_row = (data, row) => {
         }
     }
 }
-const add_notice_to_table = (data) => {
-    const row_id = "notice_row_" + data.notice_id;
+const add_notice_to_table = (data, notice_id) => {
+    const row_id = "notice_row_" + notice_id;
     const row = document.getElementById(row_id)
     format_dates_in_notice(data);
     if (row === null) add_new_notice_row(data);
@@ -71,7 +71,7 @@ socket.on("notice_update", (data) => {
   const notice_id = data.notice_id
   const update_type = data.update_type;
   const changed_data = data.changed_data;
-  add_notice_to_table(changed_data);
+  add_notice_to_table(changed_data, notice_id);
   show_alert(`Notice: ${notice_id} ${update_type}`, "success");
 
 })
