@@ -62,7 +62,7 @@ class APIPoller:
                 continue
             print(
                 f"[+] {len(notice_ids)} notices"
-                " found with query: {query_options}"
+                f" found with query: {query_options}"
             )
             for notice_id in notice_ids:
                 count += self._read_and_publish_notice(notice_id)
