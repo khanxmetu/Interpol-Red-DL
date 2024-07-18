@@ -34,7 +34,6 @@ docker-compose run notice_server pytest
 ### Environment Variables
 #### api_poller.env
 Stores configuration options specific to `api_poller` application:
-Stores configuration options specific to `api_poller` application:
 | Name                    | Description                                                |
 | ----------------------- | ---------------------------------------------------------- |
 | `RED_LIST_URL`          | URL to Red List API endpoint                           |
