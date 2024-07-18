@@ -1,3 +1,5 @@
+from pydantic import ValidationError
+
 from api_poller.api_request_session import APIRequestSession
 from api_poller.models.notice import Notice
 from api_poller.exceptions import NoticeDetailParsingException
@@ -64,5 +66,5 @@ class NoticeDetailFetcher:
         data = self._session.get_json_response(url)
         try:
             return self._make_notice_from_embed(data)
-        except KeyError as e:
+        except (KeyError, ValidationError) as e:
             raise NoticeDetailParsingException(e)
