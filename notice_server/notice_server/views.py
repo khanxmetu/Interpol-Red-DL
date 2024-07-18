@@ -9,11 +9,8 @@ def index():
 def notice_list():
     notice_db_manager: NoticeDBManager = g.notice_db_manager
     notices = notice_db_manager.get_all_notices()
-    notices_son_objects = [
-        notice.to_mongo(use_db_field=False)
-        for notice in notices
-    ]
-    return jsonify(notices_son_objects)
+    notices_list_of_dict = [notice.to_dict() for notice in notices]
+    return jsonify(notices_list_of_dict)
 
 
 def notice_detail(notice_id: str):
