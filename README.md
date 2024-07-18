@@ -76,7 +76,7 @@ Request headers for API requests can be set in this file: `api_poller/config_dat
 ## Notes about Interpol API
 - The project is created for demonstration purposes only. Notice data may not be used for any commercial purpose, as stated in [Interpol's Disclaimer](https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices)
 - Although the Interpol API is publicly available, it appears to be intended for internal use only, with measures to prevent bots.
-	- The API includes User-Agent and other header field validation checks to prevent bots. Therefore `api_poller/config_data/headers.json` file is provided to spoof headers.
-	- The API implements rate-limiting to prevent excessive requests. The `API_RATE_LIMIT_DELAY` configuration option allows for adjustments.
+	- The Interpol API includes User-Agent and other header field validation checks to prevent bots. Therefore `api_poller/config_data/headers.json` file is provided to spoof headers.
+	- The Interpol API implements rate-limiting to prevent excessive requests. The `API_RATE_LIMIT_DELAY` configuration option allows for adjustments.
 - [Interpol](https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices) displays up to 160 notices per search result, advising users to refine search criteria to locate specific notices. However there are approximately 7000 notices in circulation at the time of this project's writing.
 	- To address this, a `SimpleBruteforceSearch` strategy has been developed, which bruteforces the search criteria based on a wanted person's nationality and age. This approach is more practical than bruteforcing string-based parameters.
