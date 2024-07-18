@@ -2,3 +2,5 @@ pika
 mongoengine
 flask
 flask-socketio
+pytest
+pytest-cov
