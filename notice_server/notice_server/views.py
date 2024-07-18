@@ -15,10 +15,9 @@ def notice_list():
 
 def notice_detail(notice_id: str):
     notice_db_manager: NoticeDBManager = g.notice_db_manager
-    notice_son_object = notice_db_manager.get_notice_by_id(
-        notice_id).to_mongo(use_db_field=False)
-    return jsonify(notice_son_object)
-
+    notice_dict = notice_db_manager.get_notice_by_id(
+        notice_id).to_dict()
+    return jsonify(notice_dict)
 
 def notice_list_page():
     return render_template("notice_list.html")
