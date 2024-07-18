@@ -13,6 +13,11 @@ class NoticeUpdateType(Enum):
 
 class NoticeUpdateNotifier:
     def __init__(self, socketio: SocketIO) -> None:
+        """
+        Initializes the NoticeUpdateNotifier.
+
+        :param socketio: A SocketIO instance representing the clients connected to receive notice updates
+        """
         self._socketio = socketio
 
     def _prepare_notice_data_for_transmission(self, data: dict) -> None:
@@ -30,6 +35,13 @@ class NoticeUpdateNotifier:
             update_type: NoticeUpdateType,
             changed_data: dict
     ) -> None:
+        """
+        Sends a notice update to all clients connected via the SocketIO instance.
+
+        :param notice_id: The id of the notice being updated.
+        :param update_type: The type of update being performed (created, refetched, modified).
+        :param changed_data: A dictionary containing the changed data for the notice.
+        """
         changed_data = changed_data.copy()
         self._prepare_notice_data_for_transmission(changed_data)
         self._socketio.emit(
