@@ -9,7 +9,7 @@ from api_poller.models.notice import Notice
 from api_poller.notice_list_fetcher import NoticeListFetcher
 from api_poller.notice_detail_fetcher import NoticeDetailFetcher, NoticeImageIDsFetcher
 from api_poller.notice_publisher import NoticePublisher
-from api_poller.query_strategy import SimpleDefaultSearch
+from api_poller.query_strategy import SimpleDefaultSearch, SimpleBruteforceSearch
 from api_poller.rabbitmq_client import RabbitMQSender
 
 
@@ -90,10 +90,15 @@ def main():
     rabbitmq_pass = os.environ["RABBITMQ_DEFAULT_PASS"]
     queue_name = os.environ["QUEUE_NAME"]
 
+    if int(os.environ["QUERY_STRATEGY"]) == 1:
+        query_strategy = SimpleBruteforceSearch()
+    else:
+        query_strategy = SimpleDefaultSearch()
+
     session = APIRequestSession(headers=session_headers)
 
-    query_options_list: list[QueryOptions] = SimpleDefaultSearch(
-    ).get_query_options_list()
+    query_options_list: list[QueryOptions] = query_strategy.get_query_options_list(
+    )
 
     notice_list_fetcher = NoticeListFetcher(
         session,
