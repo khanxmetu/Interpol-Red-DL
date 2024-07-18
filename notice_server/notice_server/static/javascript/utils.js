@@ -30,3 +30,7 @@ const convert_date_to_human_readable = (date_obj) => {
 }
 
 
+export const get_cache_busted_url = (url) => {
+    const cur_timestamp = new Date().getTime();
+    return `${url}?_=${cur_timestamp}`;
+}

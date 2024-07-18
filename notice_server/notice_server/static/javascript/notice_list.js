@@ -1,4 +1,4 @@
-import {format_dates_in_notice} from "./utils.js"
+import {format_dates_in_notice, get_cache_busted_url} from "./utils.js"
 import {show_alert} from "./show_alert.js"
 
 const table_data_fields = [
@@ -53,7 +53,7 @@ const add_notice_to_table = (data, notice_id) => {
 }
 async function fetch_and_populate_table(url) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(get_cache_busted_url(url));
         if (!response.ok) {
             throw new Error(`Got http status code: ${response.status}`);
         }

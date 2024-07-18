@@ -1,4 +1,4 @@
-import { format_dates_in_notice } from "./utils.js"
+import { format_dates_in_notice, get_cache_busted_url } from "./utils.js"
 import { show_alert } from "./show_alert.js"
 import {COUNTRIES, LANGUAGES, EYES, HAIRS, SEXES} from "./abbreviations_data.js"
 
@@ -101,7 +101,7 @@ const populate_notice_detail = (data) => {
 
 async function fetch_and_populate_details(url) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(get_cache_busted_url(url));
         if (!response.ok) {
             throw new Error(`Got http status code: ${response.status}`);
         }
