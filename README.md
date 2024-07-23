@@ -73,6 +73,9 @@ Stores configuration options for `compose.yaml`:
 #### Request Headers
 Request headers for API requests can be set in this file: `api_poller/config_data/headers.json`
 
+## System Overview
+![High-Level Docker Diagram](docs/images/High-Level-Docker-Diagram.png)
+
 ## Notes about Interpol API
 - The project is created for demonstration purposes only. Notice data may not be used for any commercial purpose, as stated in [Interpol's Disclaimer](https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices)
 - Although the Interpol API is publicly available, it appears to be intended for internal use only, with measures to prevent bots.
