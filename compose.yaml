@@ -1,0 +1,90 @@
+services:
+  api-poller:
+    build: api-poller
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./api-poller:/usr/src/app
+    env_file:
+      - api-poller/.env
+
+  notice-saver:
+    build: notice-saver
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./notice-saver:/usr/src/app
+    env_file:
+      - ./notice-saver/.env
+
+  notice-dashboard:
+    build: notice-dashboard
+    ports:
+      - 5000:5000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./notice-dashboard:/usr/src/app
+    env_file:
+      - ./notice-dashboard/.env
+
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - PGUSER=postgres
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=notice-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -d notice-db'" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 15s
+      timeout: 3s
+
+  minio:
+    image: minio/minio
+    ports:
+      - 9001:9001
+      - 9000:9000
+    command: minio server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    healthcheck:
+      test: mc ready local
+      interval: 15s
+      timeout: 3s
+
+  create_bucket:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: /bin/sh -c " mc alias set s3 http://minio:9000 minioadmin minioadmin && mc mb s3/notice-images && mc anonymous set download s3/notice-images "
+
+volumes:
+  postgres_data:
+  minio_data:
