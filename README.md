@@ -2,12 +2,12 @@
 
 
 `Interpol Red-DL` is a project designed to retrieve, save and display data published by [Interpol on wanted persons](https://www.interpol.int/How-we-work/Notices/Red-Notices/). It primarily consists of three Dockerized services: `api-poller`, `notice-saver` and `notice-dashboard`.  
-`api-poller` periodically retrieves [Red Notices](https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices) from the Interpol API and sends it to RabbitMQ queue.  
-`notice-saver` reads notices from the queue, and optionally downloads the relevant images and classifies the arrest warrants by offense types before saving the information into the database. 
-`notice-dashboard` offers an interactive dashboard built with Streamlit for viewing relevant statistics, as well as accessing the notice list and detailed information.
+- `api-poller` periodically retrieves [Red Notices](https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices) from the Interpol API and sends it to RabbitMQ queue.  
+- `notice-saver` reads notices from the queue, and optionally downloads the relevant images and classifies the arrest warrants by offense types before saving the information into the database. 
+- `notice-dashboard` offers an interactive dashboard built with Streamlit for viewing relevant statistics, as well as accessing the notice list and detailed information.
 
 ## System Overview
-![High-Level Docker Diagram](docs/images/High-Level-Docker-Diagram.png)
+![High-Level Docker Diagram](https://github.com/user-attachments/assets/9a8f19d8-cab2-4934-b3f2-ea43c9854567)
 
 ## Usage
 
