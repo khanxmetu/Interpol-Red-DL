@@ -7,7 +7,7 @@
 - `notice-dashboard` offers an interactive dashboard built with Streamlit for viewing relevant statistics, as well as accessing the notice list and detailed information.
 
 ## System Overview
-![High-Level Docker Diagram](https://github.com/user-attachments/assets/9a8f19d8-cab2-4934-b3f2-ea43c9854567)
+![High-Level Docker Diagram](https://github.com/user-attachments/assets/5c57a0a5-8c63-4e75-98be-88cece9d1b5d)
 
 ## Usage
 
